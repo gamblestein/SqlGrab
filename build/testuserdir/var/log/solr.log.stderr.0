@@ -1,0 +1,6 @@
+2015-08-01 10:32:46.673:INFO::Logging to STDERR via org.mortbay.log.StdErrLog
+2015-08-01 10:32:46.810:INFO::jetty-6.1.26
+2015-08-01 10:32:47.210:INFO::Extract file:/C:/Program%20Files/Autopsy-3.1.3/autopsy/solr/webapps/solr.war to C:\Users\Stacey\AppData\Local\Temp\Jetty_127_0_0_1_23232_solr.war__solr__.8m5dhg\webapp
+2015-08-01 10:32:51.288:INFO::Started SocketConnector@127.0.0.1:23232
+Aug 01, 2015 10:33:58 AM org.apache.solr.core.SolrCore getNewIndexDir
+WARNING: New index directory detected: old=null new=C:\Users\Stacey\Documents\TestForFP\ModuleOutput\keywordsearch\data\index/
