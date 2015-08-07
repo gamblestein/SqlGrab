@@ -63,7 +63,7 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
                         
                         if(SQLFile.IsSQLLite(file)){
                             SQLFile sqlFile = new SQLFile(file);
-                            parseDBFile(sqlFile);
+                            sqlFile.CreatePages();
                         }
                     }
                     catch (IOException ex){
@@ -85,16 +85,11 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
         
         return result;
     }
-    
-    private void parseDBFile(SQLFile file){
         
-
-    }
-    
     private void createDisplayObjects(){
         BlackboardArtifact art;
         try {
-            art = skc.newBlackboardArtifact(BlackboardArtifact.ARTIFACT_TYPE.TSK_EXTRACTED_TEXT, 7);
+            art = skc.newBlackboardArtifact(BlackboardArtifact.ARTIFACT_TYPE.TSK_INTERESTING_FILE_HIT, 7);
             
             //art = skc.newBlackboardArtifact(BlackboardArtifact.ARTIFACT_TYPE.TSK_INTERESTING_FILE_HIT, 7);
             //BlackboardAttribute attr2 = new BlackboardAttribute()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="SqlGrab">
-    <module_version install_time="1438439531479" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1438945582117" last="true" origin="installer" specification_version="1.0">
         <file crc="1781167737" name="config/Modules/SqlGrab.xml"/>
-        <file crc="3589183505" name="modules/SqlGrab.jar"/>
+        <file crc="101004602" name="modules/SqlGrab.jar"/>
     </module_version>
 </module>

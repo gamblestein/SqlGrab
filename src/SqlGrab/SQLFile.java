@@ -45,7 +45,7 @@ public class SQLFile {
             file.read(buf, FILE_SIG_OFFSET, FILE_SIG_LENGTH);
             String str = new String(buf);
             
-            if(str.equals(FILE_SIG))
+            if(str.contains(FILE_SIG))
             {
                 result = true;
             }
@@ -59,11 +59,9 @@ public class SQLFile {
     
     public SQLFile(AbstractFile File){
         this.sqlFile = File;
-
-    
     }
     
-    private void CreatePages(){
+    public void CreatePages(){
         
         byte[] buf = new byte[2];
 

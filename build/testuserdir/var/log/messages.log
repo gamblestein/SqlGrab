@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
->Log Session: Saturday, August 1, 2015 10:32:33 AM EDT
+>Log Session: Friday, August 7, 2015 7:06:35 AM EDT
 >System Info: 
   Product Version         = NetBeans Platform 7.3.1 (Build 201306052037)
   Operating System        = Windows Vista version 6.0 running on amd64
@@ -93,7 +93,7 @@ INFO [org.netbeans.core.startup.NbEvents]: Turning on modules:
 	org.netbeans.core.netigso [1.20.1 201306052037]
 	org.netbeans.core.nativeaccess/1 [1.19.1 201306052037]
 	org.netbeans.core.io.ui/1 [1.20.1 201306052037]
-	SqlGrab [1.0 150801]
+	SqlGrab [1.0 150807]
 WARNING [org.openide.filesystems.Ordering]: Found same position 250 for both Services/org-sleuthkit-autopsy-filesearch-FileSearchAction.instance and Services/org-sleuthkit-autopsy-keywordsearch-HighlightedTextMarkup.instance
 WARNING [org.openide.filesystems.Ordering]: Not all children in Services/ marked with the position attribute: [AutoupdateType, Browsers, Hidden, Introspector, MIMEResolver, PropertyEditorManager, org-sleuthkit-autopsy-corecomponents-DataContentTopComponent.instance], but some are: [org-sleuthkit-autopsy-directorytree-DirectoryTreeTopComponent.instance, org-sleuthkit-autopsy-directorytree-DirectoryTreeTopComponent2.instance, org-sleuthkit-autopsy-filesearch-FileSearchAction.instance, org-sleuthkit-autopsy-keywordsearch-HighlightedTextMarkup.instance, org-sleuthkit-autopsy-report-ReportHTML.instance, org-sleuthkit-autopsy-report-ReportExcel.instance, org-sleuthkit-autopsy-report-ReportBodyFile.instance, org-sleuthkit-autopsy-report-FileReportText.instance, org-sleuthkit-autopsy-report-ReportKML.instance, org-sleuthkit-autopsy-modules-stix-STIXReportModule.instance]
 Diagnostic information
@@ -101,7 +101,7 @@ Input arguments:
 	-Dnetbeans.logger.console=true
 	-ea
 	-Xdebug
-	-Xrunjdwp:transport=dt_socket,suspend=y,server=n,address=127.0.0.1:49304
+	-Xrunjdwp:transport=dt_socket,suspend=y,server=n,address=Stacey-PC:52569
 	-Djdk.home=C:\Program Files\Java\jdk1.8.0_51
 	-splash:C:\Users\Stacey\Documents\NetBeansProjects\SqlGrab\build\testuserdir\var\cache\splash.png
 	-Dnetbeans.home=C:\Program Files\Autopsy-3.1.3\platform
@@ -116,9 +116,9 @@ Input arguments:
 Compiler: HotSpot 64-Bit Tiered Compilers
 Heap memory usage: initial 64.0MB maximum 903.5MB
 Non heap memory usage: initial 2.4MB maximum -1b
-Garbage collector: PS Scavenge (Collections=9 Total time spent=0s)
+Garbage collector: PS Scavenge (Collections=10 Total time spent=0s)
 Garbage collector: PS MarkSweep (Collections=2 Total time spent=0s)
-Classes: loaded=5720 total loaded=5720 unloaded 0
+Classes: loaded=5716 total loaded=5716 unloaded 0
 INFO [org.netbeans.core.ui.warmup.DiagnosticTask]: Total memory 4,257,492,992
 INFO [null]: Total physical memory 4,257,492,992
 WARNING [org.openide.filesystems.Ordering]: Found same position 1,400 for both Menu/Tools/org-netbeans-modules-autoupdate-ui-actions-PluginManagerAction.shadow and Menu/Tools/org-sleuthkit-autopsy-actions-OpenPythonModulesFolderAction.shadow
@@ -126,11 +126,9 @@ WARNING [org.openide.filesystems.Ordering]: Found same position 200 for both Men
 WARNING [org.openide.filesystems.Ordering]: Found same position 100 for both Menu/Tools/org-sleuthkit-autopsy-report-ReportWizardAction.shadow and Menu/Tools/org-sleuthkit-autopsy-timeline-Timeline.shadow
 INFO [org.netbeans.core.windows.persistence]: [PersistenceManager.getTopComponentForID] Problem when deserializing TopComponent for tcID:'Directory Listing'. Reason: Top component Directory Listing could not be located or loaded from Components folder.
 INFO [org.netbeans.core.windows.persistence]: [PersistenceManager.getTopComponentForID] Problem when deserializing TopComponent for tcID:'DataContentTopComponent'. Reason: Top component DataContentTopComponent could not be located or loaded from Components folder.
-INFO [org.openide.awt.Toolbar]: Too long AWTTask: 617 ms for org.openide.awt.MenuBar$LazyMenu$MenuFolder@f512123(FolderList{MultiFileObject@17cbc467[Menu/Window]})
+INFO [org.openide.awt.Toolbar]: Too long AWTTask: 781 ms for org.openide.awt.MenuBar$LazyMenu$MenuFolder@1cf83ed1(FolderList{MultiFileObject@76e5cb37[Menu/Window]})
 WARNING [org.openide.filesystems.Ordering]: Could not find both sides of relative ordering attribute master-help.xml/org-sleuthkit-autopsy-corecomponents-CustomAboutAction.shadow on Menu/Help
-INFO [org.netbeans.modules.sampler.InternalSampler]: Slowness detector disabled - running in debug mode
+INFO [org.netbeans.modules.autoupdate.updateprovider.DownloadListener]: Reading URL http://sleuthkit.org/autopsy/updates.xml failed (java.net.UnknownHostException: sleuthkit.org)
 INFO [org.sleuthkit.datamodel.SleuthkitCase]: sqlite-jdbc version 3.7.151 loaded in native mode
-WARNING [org.netbeans.core.TimableEventQueue]: too much time in AWT thread null
-WARNING [org.netbeans.core.TimableEventQueue]: too much time in AWT thread null
-WARNING [org.sleuthkit.autopsy.keywordsearch.KeywordSearch$CaseChangeListener]: Could not close core.
-1344520206 closed
+INFO [org.netbeans.modules.sampler.InternalSampler]: Slowness detector disabled - running in debug mode
+WARNING [org.netbeans.core.startup.InstalledFileLocatorImpl]: no such module C:\Program Files\Autopsy-3.1.3\autopsy\update_tracking\org-sleuthkit-autopsy-python.xml at org.sleuthkit.autopsy.python.JythonModuleLoader.getInterfaceImplementations(JythonModuleLoader.java:77)

@@ -1,4 +1,4 @@
-#Sat Aug 01 10:33:13 EDT 2015
+#Fri Aug 07 07:07:25 EDT 2015
 org.netbeans.core.startup.OpenIDE-Module-Deprecated=\u0000
 org.netbeans.modules.settings.AutoUpdate-Show-In-Client=false
 org.netbeans.core.startup.OpenIDE-Module-Layer=org/netbeans/core/startup/layer.xml
@@ -324,8 +324,8 @@ org.netbeans.swing.tabcontrol.OpenIDE-Module-Deprecated=\u0000
 org.netbeans.modules.options.keymap.OpenIDE-Module-Install=\u0000
 org.sleuthkit.autopsy.testing.AutoUpdate-Show-In-Client=false
 org.netbeans.modules.print.OpenIDE-Module-Description=\u0000
-org.netbeans.libs.felix.AutoUpdate-Show-In-Client=false
 org.netbeans.modules.masterfs.macosx.AutoUpdate-Show-In-Client=false
+org.netbeans.libs.felix.AutoUpdate-Show-In-Client=false
 org.netbeans.swing.plaf.OpenIDE-Module-Install=\u0000
 org.netbeans.modules.jellytools.java.AutoUpdate-Show-In-Client=false
 org.openide.util.lookup.AutoUpdate-Show-In-Client=false

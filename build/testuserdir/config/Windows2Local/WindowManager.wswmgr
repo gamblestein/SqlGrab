@@ -33,8 +33,8 @@
   </main-window>
     <editor-area state="joined" frame-state="0">
   <constraints>
-  <path orientation="horizontal" number="60" weight="0.7849083215796897" />
-  <path orientation="vertical" number="40" weight="0.2959028831562974" />
+  <path orientation="horizontal" number="60" weight="0.7" />
+  <path orientation="vertical" number="40" weight="0.6949924127465857" />
   <path orientation="horizontal" number="40" weight="0.7" />
   <path orientation="vertical" number="40" weight="0.5" />
   </constraints>
