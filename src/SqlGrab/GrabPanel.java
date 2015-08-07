@@ -6,11 +6,24 @@
 package SqlGrab;
 
 import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
 import org.openide.nodes.Node;
 import org.openide.util.lookup.ServiceProvider;
 import org.sleuthkit.autopsy.corecomponentinterfaces.DataContentViewer;
 import org.sleuthkit.datamodel.Content;
 import org.sleuthkit.datamodel.TskCoreException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import org.sleuthkit.autopsy.casemodule.Case;
+import org.sleuthkit.autopsy.datamodel.ContentUtils;
+import org.sleuthkit.datamodel.AbstractFile;
+import org.sleuthkit.datamodel.BlackboardArtifact;
 
 /**
  *
@@ -18,7 +31,7 @@ import org.sleuthkit.datamodel.TskCoreException;
  */
 @ServiceProvider(service = DataContentViewer.class)
 public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
-
+    private static final String TEMPFILE = "tempfile.sqlite"; 
     /**
      * Creates new form GrabPanel
      */
@@ -88,33 +101,99 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
+    public void addDataToTable(ResultSet rs){
+        try{
+           jTable2 = new JTable(buildTableModel(rs)); 
+        }
+        catch (Exception e){
+            
+        }
+        
+    }
+    
+    //Code borrowed from StackOverflow - all credit to author
+    //http://stackoverflow.com/questions/10620448/most-simple-code-to-populate-jtable-from-resultset
+    public static DefaultTableModel buildTableModel(ResultSet rs)
+        throws SQLException {
+
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // names of columns
+        Vector<String> columnNames = new Vector<String>();
+        int columnCount = metaData.getColumnCount();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // data of the table
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        while (rs.next()) {
+            Vector<Object> vector = new Vector<Object>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                vector.add(rs.getObject(columnIndex));
+            }
+            data.add(vector);
+        }
+
+        return new DefaultTableModel(data, columnNames);
+
+    }
+    
+    
     @Override
     public void setNode(org.openide.nodes.Node selectedNode) {
+        
+        
         try{
             if (selectedNode == null) {
                 setText("");
                 return;    
             }
-            Content content = selectedNode.getLookup().lookup(Content.class);
-                if (content == null) {
+            AbstractFile file = selectedNode.getLookup().lookup(AbstractFile.class);
+            if (file == null) {
                 // non-content object passed in
                 setText("");
                 return;
             }
-
-            setText("Doing Analysis");
-            byte buffer[] = new byte[1024];
-            int len = content.read(buffer, 0, 1024);
-            int count = 0;
-            for (int i = 0; i < len; i++) {
-                if (buffer[i] == 0x00) {
-                    count++;
+            
+            if(file.canRead())
+            {
+                ArrayList<BlackboardArtifact> list = file.getAllArtifacts();
+                try {
+                        
+                    if(RawSQLFile.IsSQLLite(file)){
+                        RawSQLFile sqlFile = new RawSQLFile(file);
+                        sqlFile.CreatePages();
+                        FullParse(CreateDBFile(file));
+                            
+                    }
                 }
-        }
-        setText(count + " out of " + len + " bytes were 0x00");
-        } catch (TskCoreException ex) {
+                catch (IOException ex){
+                    System.out.println("Error reading files from database: " + ex.getLocalizedMessage());
+                }
+            }
+
+        } catch (Exception ex) {
             setText("Error reading file: " + ex.getLocalizedMessage());
         }
+    }
+    
+    private void FullParse(String filepath){
+    
+        FullSQLParse.GetSqlData(filepath);
+        
+    }
+    
+    private String CreateDBFile(AbstractFile fileData){
+        //String path = Case.getCurrentCase().getTempDirectory() + File.separator + TEMPFILE;
+        try{
+            ContentUtils.writeToFile(fileData, new File(TEMPFILE));
+        }
+        catch (Exception e){
+            //TODO
+        }
+        
+        return TEMPFILE;
     }
     
     

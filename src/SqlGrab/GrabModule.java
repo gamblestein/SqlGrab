@@ -22,6 +22,9 @@ import org.sleuthkit.datamodel.BlackboardArtifact;
 import org.sleuthkit.datamodel.BlackboardAttribute;
 import org.sleuthkit.datamodel.BlackboardAttribute.ATTRIBUTE_TYPE;
 import org.sleuthkit.datamodel.Content;
+import java.io.File;
+import java.io.FileOutputStream;
+import org.sleuthkit.autopsy.datamodel.ContentUtils;
 
 
 /**
@@ -30,6 +33,8 @@ import org.sleuthkit.datamodel.Content;
  */
 public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngestModule{
 
+    private static final String TEMPFILE = "tempfile.sqlite"; 
+    
     private IngestJobContext context = null;
     
     Case case1;
@@ -61,9 +66,11 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
                     ArrayList<BlackboardArtifact> list = file.getAllArtifacts();
                     try {
                         
-                        if(SQLFile.IsSQLLite(file)){
-                            SQLFile sqlFile = new SQLFile(file);
+                        if(RawSQLFile.IsSQLLite(file)){
+                            RawSQLFile sqlFile = new RawSQLFile(file);
                             sqlFile.CreatePages();
+                            FullParse(CreateDBFile(file));
+                            
                         }
                     }
                     catch (IOException ex){
@@ -86,8 +93,31 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
         return result;
     }
         
+    private void FullParse(String filepath){
+    
+        FullSQLParse.GetSqlData(filepath);
+        
+    }
+    
+    private String CreateDBFile(AbstractFile fileData){
+        String path = case1.getTempDirectory() + File.separator + TEMPFILE;
+        try{
+            ContentUtils.writeToFile(fileData, new File(path));
+        }
+        catch (Exception e){
+            //TODO
+        }
+        
+        return path;
+    }
+    
+    
     private void createDisplayObjects(){
         BlackboardArtifact art;
+        
+        GrabPanel p = new GrabPanel();
+        
+        
         try {
             art = skc.newBlackboardArtifact(BlackboardArtifact.ARTIFACT_TYPE.TSK_INTERESTING_FILE_HIT, 7);
             

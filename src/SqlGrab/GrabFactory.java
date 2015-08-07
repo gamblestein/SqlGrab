@@ -23,7 +23,7 @@ import org.sleuthkit.autopsy.ingest.IngestModuleIngestJobSettingsPanel;
  *
  * @author Hodge
  */
-@ServiceProvider(service = IngestModuleFactory.class) // Sample is discarded at runtime 
+@ServiceProvider(service = GrabFactory.class) // Sample is discarded at runtime 
 public class GrabFactory implements IngestModuleFactory {
     private static final String VERSION_NUMBER = "1.0.0.0";
 
