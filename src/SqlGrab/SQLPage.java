@@ -17,6 +17,9 @@ public class SQLPage {
     
     private int pageSize;
     
+    private String freeData = "";
+    private String unAllocData = "";
+    
     byte[] sqlPage;
         
     int freeBlock;
@@ -25,50 +28,76 @@ public class SQLPage {
     int numFreebytes;
     
     private static final int BTREE_FREE_OFFSET_OFFSET = 1;
-    private static final int BTREE_FREE_OFFSET_SIZE = 2;
+    private static final int BTREE_FREE_OFFSET_SIZE = 3;
     
     private static final int NUM_CELLS_OFFSET = 3;
-    private static final int NUM_CELLS_SIZE = 2;
+    private static final int NUM_CELLS_SIZE = 5;
     
     private static final int CELL_OFFSET_OFFSET = 5;
-    private static final int CELL_OFFSET_SIZE = 2;
+    private static final int CELL_OFFSET_SIZE = 7;
     
     private static final int NUM_FREE_BYTES_OFFSET = 7;
     private static final int NUM_FREE_BYTES_SIZE = 1;
 
-    private static final int HEADER_OFFSET = 8;
+    private static final int HEADER_OFFSET = 1;
     
     public SQLPage(int size, byte[] sqlFile) {
         this.pageSize = size;
         this.sqlPage = sqlFile;
     }
     
-    public void CollectHeader(){
+    public void CollectInformation(){
         
         
         ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, BTREE_FREE_OFFSET_OFFSET, BTREE_FREE_OFFSET_SIZE));
-        freeBlock = wrapped.getInt();
+        freeBlock = wrapped.getShort();
 
         wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, NUM_CELLS_OFFSET, NUM_CELLS_SIZE));
-        numCells = wrapped.getInt();
+        numCells = wrapped.getShort();
         
         wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, CELL_OFFSET_OFFSET, CELL_OFFSET_SIZE));
-        cellOffset = wrapped.getInt();
+        cellOffset = wrapped.getShort();
         
-        wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, NUM_FREE_BYTES_OFFSET, NUM_FREE_BYTES_SIZE));
-        numFreebytes = wrapped.getInt();
-        
+        //wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, NUM_FREE_BYTES_OFFSET, NUM_FREE_BYTES_SIZE));
+        //numFreebytes = wrapped.getInt();
+        getFreeData();
+        getUnAllocData();
     }
     
-    private void getFreeBlock(){
+    public String GetRawData(){
+        return "Free:\n" + freeData + "Unallocated:\n" + unAllocData;
+    }
+    
+    private void getFreeData()
+    {
+        while(freeBlock != 0)
+        {
+            ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, freeBlock, freeBlock+2));
+            int NextFreeBlock = wrapped.getShort();
+            
+            wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, freeBlock+2, freeBlock+6));
+            int FreeBlockSize = wrapped.getInt();
+            
+            byte[] free = Arrays.copyOfRange(sqlPage, freeBlock+6, freeBlock+FreeBlockSize);   
+            String data = new String(free);
+            freeData += "FreeBlock:" + CleanString(data);
+            
+            freeBlock = NextFreeBlock;
+        }
+    }
+    
+    private String CleanString(String input){
+        return input.trim().replaceAll("^[\\u0000-\\uFFFF]", "");
+    }
+    
+    private void getUnAllocData(){
         int start = 8 + (numCells * 2);
         int length = cellOffset - start;
         
-        byte[] cells = Arrays.copyOfRange(sqlPage, HEADER_OFFSET, numCells*2);
-        byte[] unallocated = Arrays.copyOfRange(sqlPage, start + numCells*2 + 1, length);
-        
+        int offset = start + numCells*2 + 1;
+        byte[] unallocated = Arrays.copyOfRange(sqlPage, offset, offset+length);   
         String data = new String(unallocated);
-        //sqlPage.read(buf, FILE_SIG_OFFSET, FILE_SIG_LENGTH);
+        unAllocData = CleanString(data);
     }
     
 }

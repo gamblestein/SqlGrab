@@ -52,25 +52,8 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(GrabPanel.class, "GrabPanel.jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -97,22 +80,20 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
-    public void addDataToTable(ResultSet rs){
-        try{
-           jTable2 = new JTable(buildTableModel(rs)); 
-        }
-        catch (Exception e){
-            
-        }
-        
-    }
+//    public void addDataToTable(ResultSet rs){
+//        try{
+//           jTable2 = new JTable(buildTableModel(rs)); 
+//        }
+//        catch (Exception e){
+//
+//        }
+//
+//    }
     
     //Code borrowed from StackOverflow - all credit to author
     //http://stackoverflow.com/questions/10620448/most-simple-code-to-populate-jtable-from-resultset
@@ -168,7 +149,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
                         RawSQLFile sqlFile = new RawSQLFile(file);
                         sqlFile.CreatePages();
                         FullParse(CreateDBFile(file));
-                            
+                        jTextArea1.setText(sqlFile.GetPageData());
                     }
                 }
                 catch (IOException ex){
@@ -218,10 +199,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
         for(String tabname: tabs){
             CreateTab(tabname);
         }
-              
-        jTable2.tableChanged(null);
-        
-    }
+    }  
     
     private String CreateDBFile(AbstractFile fileData){
         //String path = Case.getCurrentCase().getTempDirectory() + File.separator + TEMPFILE;

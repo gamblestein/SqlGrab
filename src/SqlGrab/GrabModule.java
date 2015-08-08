@@ -67,22 +67,15 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
                     try {
                         
                         if(RawSQLFile.IsSQLLite(file)){
-                            RawSQLFile sqlFile = new RawSQLFile(file);
-                            sqlFile.CreatePages();
-                            FullParse(CreateDBFile(file));
-                            
+                            createDisplayObjects();
                         }
                     }
                     catch (IOException ex){
                         System.out.println("Error reading files from database: " + ex.getLocalizedMessage());
                     }
                 }
-                
-                // check header
-                // parse file if DB
-                // add to sql list
             }
-            createDisplayObjects();
+            
             
         }
         catch (TskCoreException ex){
@@ -99,17 +92,17 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
         
     }
     
-    private String CreateDBFile(AbstractFile fileData){
-        String path = case1.getTempDirectory() + File.separator + TEMPFILE;
-        try{
-            ContentUtils.writeToFile(fileData, new File(path));
-        }
-        catch (Exception e){
-            //TODO
-        }
-        
-        return path;
-    }
+//    private String CreateDBFile(AbstractFile fileData){
+//        String path = case1.getTempDirectory() + File.separator + TEMPFILE;
+//        try{
+//            ContentUtils.writeToFile(fileData, new File(path));
+//        }
+//        catch (Exception e){
+//            //TODO
+//        }
+//        
+//        return path;
+//    }
     
     
     private void createDisplayObjects(){
@@ -141,7 +134,4 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
         
     }
     
-    private void displayObjects(){
-        
-    }
 }

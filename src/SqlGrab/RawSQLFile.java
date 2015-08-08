@@ -8,6 +8,7 @@ import org.sleuthkit.datamodel.AbstractFile;
 import java.io.IOException;
 import org.sleuthkit.datamodel.TskCoreException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,15 +19,15 @@ public class RawSQLFile {
     private static final long FILE_SIG_OFFSET = 0;
     private static final long FILE_SIG_LENGTH = 16;
     
-    private static final long FILE_PAGE_OFFSET = 16;
-    private static final long FILE_PAGE_LENGTH = 2;
+    private static final long PAGE_SIZE_OFFSET = 16;
+    private static final long PAGE_SIZE_LENGTH = 2;
     
     private static final long FILE_FLAG_LENGTH = 1;
     private static final int FILE_FLAG_VALUE = 13;
     
-    private static final int FILE_PAGES_OFFSET = 100;
+    private static final int FILE_HEADER_OFFSET = 100;
     
-    private SQLPage[] pages;
+    private ArrayList<SQLPage> pages = new ArrayList();
     
     private static final String FILE_SIG = "SQLite";
     
@@ -67,7 +68,7 @@ public class RawSQLFile {
 
         
         try {  
-            sqlFile.read(buf, FILE_PAGE_OFFSET, FILE_PAGE_LENGTH);   
+            sqlFile.read(buf, PAGE_SIZE_OFFSET, PAGE_SIZE_LENGTH);   
         }
         catch(TskCoreException ex){
             System.out.println("Error reading files from database: " + ex.getLocalizedMessage());
@@ -76,10 +77,9 @@ public class RawSQLFile {
         ByteBuffer wrapped = ByteBuffer.wrap(buf);
         short pageSize = wrapped.getShort();
         
-        pages = new SQLPage[((int) sqlFile.getSize()/pageSize)];
         byte[] dataBlock = new byte[pageSize];
         
-        for(int fileOffset = FILE_PAGES_OFFSET;fileOffset < sqlFile.getSize();fileOffset +=pageSize) {
+        for(int fileOffset = pageSize;fileOffset < sqlFile.getSize();fileOffset +=pageSize) {
             if(IsBtree(fileOffset)){
                 
                 try {  
@@ -90,11 +90,20 @@ public class RawSQLFile {
                 }
         
                 SQLPage sqlPage = new SQLPage(pageSize, dataBlock);
-                sqlPage.CollectHeader();
-                 
-                pages[fileOffset%pageSize] = sqlPage;
+                sqlPage.CollectInformation();
+                
+                pages.add(sqlPage);
             }
         }
+    }
+    
+    public String GetPageData()
+    {
+        String returnString = "";
+        for(int i=0; i < pages.size(); i++){
+            returnString += "Page " + i + ":\n" + ((SQLPage)pages.get(i)).GetRawData();
+        }
+        return returnString;
     }
     
     private boolean IsBtree(long offset){
