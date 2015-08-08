@@ -164,7 +164,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
         jTextArea.setRows(5);
         jScrollPane.setViewportView(jTextArea);
 
-        jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(GrabPanel.class, "GrabPanel.jScrollPane3.TabConstraints.tabTitle"), jScrollPane3);
+        jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(GrabPanel.class, "GrabPanel.jScrollPane3.TabConstraints.tabTitle"), jScrollPane);
         jTextArea.setText(text);
     }
     

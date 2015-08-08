@@ -32,9 +32,7 @@ import org.sleuthkit.autopsy.datamodel.ContentUtils;
  * @author Stacey
  */
 public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngestModule{
-
-    private static final String TEMPFILE = "tempfile.sqlite"; 
-    
+   
     private IngestJobContext context = null;
     
     Case case1;
@@ -85,26 +83,7 @@ public class GrabModule implements org.sleuthkit.autopsy.ingest.DataSourceIngest
         
         return result;
     }
-        
-    private void FullParse(String filepath){
-    
-        FullSQLParse.GetSqlData(filepath);
-        
-    }
-    
-//    private String CreateDBFile(AbstractFile fileData){
-//        String path = case1.getTempDirectory() + File.separator + TEMPFILE;
-//        try{
-//            ContentUtils.writeToFile(fileData, new File(path));
-//        }
-//        catch (Exception e){
-//            //TODO
-//        }
-//        
-//        return path;
-//    }
-    
-    
+               
     private void createDisplayObjects(){
         BlackboardArtifact art;
         

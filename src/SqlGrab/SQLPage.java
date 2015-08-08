@@ -66,10 +66,10 @@ public class SQLPage {
     
     public String GetRawData(){
         String ReturnString = "";
-        if(freeData != ""){
+        if(!freeData.equals("")){
             ReturnString = "Free:\n" + freeData; 
         }
-        if(unAllocData!=""){
+        if(!unAllocData.equals("")){
             ReturnString += "Unallocated:\n" + unAllocData;
         }
         return ReturnString;
