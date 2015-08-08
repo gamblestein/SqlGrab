@@ -65,7 +65,14 @@ public class SQLPage {
     }
     
     public String GetRawData(){
-        return "Free:\n" + freeData + "Unallocated:\n" + unAllocData;
+        String ReturnString = "";
+        if(freeData != ""){
+            ReturnString = "Free:\n" + freeData; 
+        }
+        if(unAllocData!=""){
+            ReturnString += "Unallocated:\n" + unAllocData;
+        }
+        return ReturnString;
     }
     
     private void getFreeData()
@@ -75,27 +82,27 @@ public class SQLPage {
             ByteBuffer wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, freeBlock, freeBlock+2));
             int NextFreeBlock = wrapped.getShort();
             
-            wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, freeBlock+2, freeBlock+6));
-            int FreeBlockSize = wrapped.getInt();
+            wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, freeBlock+2, freeBlock+4));
+            int FreeBlockSize = wrapped.getShort();
             
-            byte[] free = Arrays.copyOfRange(sqlPage, freeBlock+6, freeBlock+FreeBlockSize);   
+            byte[] free = Arrays.copyOfRange(sqlPage, freeBlock+4, freeBlock+FreeBlockSize);   
             String data = new String(free);
-            freeData += "FreeBlock:" + CleanString(data);
+            freeData += "FreeBlock:\n" + CleanString(data) +'\n';
             
             freeBlock = NextFreeBlock;
         }
     }
     
     private String CleanString(String input){
-        return input.trim().replaceAll("^[\\u0000-\\uFFFF]", "");
+        return input.trim();//.replaceAll("^[\\u0000-\\uFFFF]", "");
     }
     
     private void getUnAllocData(){
         int start = 8 + (numCells * 2);
         int length = cellOffset - start;
         
-        int offset = start + numCells*2 + 1;
-        byte[] unallocated = Arrays.copyOfRange(sqlPage, offset, offset+length);   
+        
+        byte[] unallocated = Arrays.copyOfRange(sqlPage, start, start+length);   
         String data = new String(unallocated);
         unAllocData = CleanString(data);
     }

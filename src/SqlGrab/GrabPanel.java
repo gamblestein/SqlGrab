@@ -9,6 +9,9 @@ import java.awt.Component;
 import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.openide.nodes.Node;
 import org.openide.util.lookup.ServiceProvider;
 import org.sleuthkit.autopsy.corecomponentinterfaces.DataContentViewer;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JViewport;
 import org.sleuthkit.autopsy.casemodule.Case;
@@ -84,17 +88,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-
-//    public void addDataToTable(ResultSet rs){
-//        try{
-//           jTable2 = new JTable(buildTableModel(rs)); 
-//        }
-//        catch (Exception e){
-//
-//        }
-//
-//    }
-    
+   
     //Code borrowed from StackOverflow - all credit to author
     //http://stackoverflow.com/questions/10620448/most-simple-code-to-populate-jtable-from-resultset
     public static DefaultTableModel buildTableModel(ResultSet rs)
@@ -127,7 +121,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     @Override
     public void setNode(org.openide.nodes.Node selectedNode) {
         
-        
+        jTabbedPane1.removeAll();
         try{
             if (selectedNode == null) {
                 setText("");
@@ -149,7 +143,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
                         RawSQLFile sqlFile = new RawSQLFile(file);
                         sqlFile.CreatePages();
                         FullParse(CreateDBFile(file));
-                        jTextArea1.setText(sqlFile.GetPageData());
+                        CreatTextTable(sqlFile.GetPageData());
                     }
                 }
                 catch (IOException ex){
@@ -162,7 +156,20 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
         }
     }
     
-    private void CreateTab(String tabName){
+    private void CreatTextTable(String text){
+        JScrollPane jScrollPane = new javax.swing.JScrollPane();
+        JTextArea jTextArea = new javax.swing.JTextArea();
+
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
+        jScrollPane.setViewportView(jTextArea);
+
+        jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(GrabPanel.class, "GrabPanel.jScrollPane3.TabConstraints.tabTitle"), jScrollPane3);
+        jTextArea.setText(text);
+    }
+    
+    
+    private void CreateDBTab(String tabName){
                 
         JHorizontalFriendlyTable jTable = new JHorizontalFriendlyTable();
         JScrollPane jScrollPane = new javax.swing.JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -193,21 +200,27 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     
     private void FullParse(String filepath){
     
-        FullSQLParse fp = new FullSQLParse(filepath);
-        ArrayList<String> tabs = fp.GetTables();
+        
+        ArrayList<String> tabs = FullSQLParse.GetTables();
         
         for(String tabname: tabs){
-            CreateTab(tabname);
+            CreateDBTab(tabname);
         }
     }  
     
     private String CreateDBFile(AbstractFile fileData){
-        //String path = Case.getCurrentCase().getTempDirectory() + File.separator + TEMPFILE;
+        
+        
+        
         try{
-            ContentUtils.writeToFile(fileData, new File(TEMPFILE));
+            Path path =Paths.get(TEMPFILE);
+            Files.delete(path);
+            File file = new File(TEMPFILE);
+            ContentUtils.writeToFile(fileData, file);
+            
         }
-        catch (Exception e){
-            //TODO
+        catch (Exception ex){
+            System.out.println("Error reading file: " + ex.getLocalizedMessage());
         }
         
         return TEMPFILE;

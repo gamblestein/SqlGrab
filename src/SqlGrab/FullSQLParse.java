@@ -25,23 +25,13 @@ public class FullSQLParse {
     
     static String[] tableNames;
     ArrayList list = new ArrayList();
-    SQLiteDBConnect tempdbConnect;
-    
-    public FullSQLParse(String filePath){
-        try{
-           //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
-           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");             
-        }
-        catch (Exception e)
-        {
-            System.out.print(e.getMessage());
-        } 
-    }
     
     
-    public ArrayList GetTables(){
+    public static ArrayList GetTables(){
         ArrayList<String> returnList = new ArrayList();
+        SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
         try{
+           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
            ResultSet rs = tempdbConnect.executeQry(GETTABLES);
            while(rs.next())
            {
@@ -52,6 +42,10 @@ public class FullSQLParse {
         {
             System.out.print(e.getMessage());
         }
+        finally
+        {
+            tempdbConnect.closeConnection();;
+        }
         return returnList;
     }
     
@@ -60,9 +54,10 @@ public class FullSQLParse {
         Connection c = null;
         FillTable ft = null;
         
+        SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
         try{
            //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
-           SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
+           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
            ResultSet rs = tempdbConnect.executeQry(nameQuery);
            ft = new FillTable(rs);
               
@@ -70,6 +65,10 @@ public class FullSQLParse {
         catch (Exception e)
         {
             System.out.print(e.getMessage());
+        }
+        finally
+        {
+            tempdbConnect.closeConnection();;
         }
         return ft;
     }
