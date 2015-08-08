@@ -8,10 +8,10 @@ package SqlGrab;
 
 import org.sleuthkit.autopsy.coreutils.SQLiteDBConnect;
 import java.sql.*;
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import javax.swing.table.TableModel;
 
 
 
@@ -25,28 +25,53 @@ public class FullSQLParse {
     
     static String[] tableNames;
     ArrayList list = new ArrayList();
+    SQLiteDBConnect tempdbConnect;
     
-    //Return this as a datasource
-    public static void GetSqlData(String filePath){
-        Connection c = null;
-        
-        Path path = Paths.get(filePath);
-        
+    public FullSQLParse(String filePath){
         try{
            //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
-           SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
+           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");             
+        }
+        catch (Exception e)
+        {
+            System.out.print(e.getMessage());
+        } 
+    }
+    
+    
+    public ArrayList GetTables(){
+        ArrayList<String> returnList = new ArrayList();
+        try{
            ResultSet rs = tempdbConnect.executeQry(GETTABLES);
-           int colCount = rs.getMetaData().getColumnCount();
-           
-           F
-           
-           
+           while(rs.next())
+           {
+               returnList.add(rs.getString("name"));
+           }       
         }
         catch (Exception e)
         {
             System.out.print(e.getMessage());
         }
+        return returnList;
+    }
+    
+    //Return this as a datasource
+    public static FillTable GetSqlData(String nameQuery){
+        Connection c = null;
+        FillTable ft = null;
         
+        try{
+           //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
+           SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
+           ResultSet rs = tempdbConnect.executeQry(nameQuery);
+           ft = new FillTable(rs);
+              
+        }
+        catch (Exception e)
+        {
+            System.out.print(e.getMessage());
+        }
+        return ft;
     }
     
     

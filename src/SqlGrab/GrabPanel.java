@@ -6,6 +6,7 @@
 package SqlGrab;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import org.openide.nodes.Node;
@@ -18,8 +19,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JViewport;
 import org.sleuthkit.autopsy.casemodule.Case;
 import org.sleuthkit.autopsy.datamodel.ContentUtils;
 import org.sleuthkit.datamodel.AbstractFile;
@@ -81,13 +84,13 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -178,9 +181,45 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
         }
     }
     
+    private void CreateTab(String tabName){
+                
+        JHorizontalFriendlyTable jTable = new JHorizontalFriendlyTable();
+        JScrollPane jScrollPane = new javax.swing.JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        jTable.setModel(FullSQLParse.GetSqlData("Select * from " + tabName));
+        jScrollPane.setViewportView(jTable);
+        jScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, jTable.getTableHeader());
+        
+        
+        
+        Container tableParent = jTable.getParent();
+        if(tableParent != null){
+        
+            if (jTable.getPreferredScrollableViewportSize().getWidth() > tableParent.getPreferredSize().getWidth())
+              {
+              jTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+              jTable.doLayout();
+            }
+        }
+        jTable.setRowHeight(20);
+        jTable.setDragEnabled(false);
+        jTable.getTableHeader().setReorderingAllowed(false);
+        
+        
+        jTabbedPane1.addTab(tabName, jScrollPane); // NOI18N
+
+    }
+    
     private void FullParse(String filepath){
     
-        FullSQLParse.GetSqlData(filepath);
+        FullSQLParse fp = new FullSQLParse(filepath);
+        ArrayList<String> tabs = fp.GetTables();
+        
+        for(String tabname: tabs){
+            CreateTab(tabname);
+        }
+              
+        jTable2.tableChanged(null);
         
     }
     
