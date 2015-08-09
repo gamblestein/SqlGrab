@@ -48,7 +48,7 @@ public class SQLReport implements GeneralReportModule {
         pnl.start();
         pnl.updateStatusLabel("SQLReport");
         
-        String reportPath = basDir + File.pathSeparator + "SQLGrab.txt";
+        String reportPath = basDir + File.pathSeparator + "SQLGrab.csv";
         
         Case currCase = Case.getCurrentCase();
         SleuthkitCase skCase = currCase.getSleuthkitCase();
@@ -88,7 +88,7 @@ public class SQLReport implements GeneralReportModule {
                 templist = list.get(i);
                 for(int j=0;j<templist.length;j++){
 
-                    bfw.write(templist[j] + "|");
+                    bfw.write(templist[j] + ",");
                 }
                 bfw.newLine();
             }
