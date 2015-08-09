@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package SqlGrab;
 
 import java.io.BufferedWriter;
@@ -18,7 +22,10 @@ import org.sleuthkit.datamodel.FsContent;
 import org.sleuthkit.datamodel.SleuthkitCase;
 import org.sleuthkit.datamodel.TskData;
 
-
+/**
+ *
+ * @author Stacey
+ */
 public class SQLReport implements GeneralReportModule {
 
     private final String fileName = "SQLGrab.csv";
