@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<keyword_lists/>
+<keyword_lists>
+ <keyword_list created="2015-08-08 17:51:50" ingest_messages="true" modified="2015-08-08 17:52:05" name="Sqllite" use_for_ingest="true">
+  <keyword literal="true">SQLite</keyword>
+ </keyword_list>
+</keyword_lists>

@@ -174,7 +174,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
         JHorizontalFriendlyTable jTable = new JHorizontalFriendlyTable();
         JScrollPane jScrollPane = new javax.swing.JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        jTable.setModel(FullSQLParse.GetSqlData("Select * from " + tabName));
+        jTable.setModel(FullSQLParse.GetSqlDataInTable("Select * from " + tabName));
         jScrollPane.setViewportView(jTable);
         jScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, jTable.getTableHeader());
         

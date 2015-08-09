@@ -50,7 +50,7 @@ public class FullSQLParse {
     }
     
     //Return this as a datasource
-    public static FillTable GetSqlData(String nameQuery){
+    public static FillTable GetSqlDataInTable(String nameQuery){
         Connection c = null;
         FillTable ft = null;
         
