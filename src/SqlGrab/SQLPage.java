@@ -85,16 +85,27 @@ public class SQLPage {
             wrapped = ByteBuffer.wrap(Arrays.copyOfRange(sqlPage, freeBlock+2, freeBlock+4));
             int FreeBlockSize = wrapped.getShort();
             
-            byte[] free = Arrays.copyOfRange(sqlPage, freeBlock+4, freeBlock+FreeBlockSize);   
-            String data = new String(free);
-            freeData += "FreeBlock:\n" + CleanString(data) +'\n';
-            
+            byte[] free = Arrays.copyOfRange(sqlPage, freeBlock+4, freeBlock+FreeBlockSize);  
+          
+
+            String data = CleanString(free);
+
+            if(!data.equals(""))
+            {
+                freeData += "FreeBlock:\n" + data +'\n';
+            }
             freeBlock = NextFreeBlock;
         }
     }
     
-    private String CleanString(String input){
-        return input.trim();//.replaceAll("^[\\u0000-\\uFFFF]", "");
+    private String CleanString(byte[] input){
+        try{
+        return new String(input,"UTF-8").trim();//.replaceAll("[^\\p{L}\\p{Nd}]+"," ");
+        }
+        catch(Exception e){
+            //todo
+        }
+        return "";
     }
     
     private void getUnAllocData(){
@@ -104,7 +115,7 @@ public class SQLPage {
         
         byte[] unallocated = Arrays.copyOfRange(sqlPage, start, start+length);   
         String data = new String(unallocated);
-        unAllocData = CleanString(data);
+        unAllocData = CleanString(unallocated);
     }
     
 }

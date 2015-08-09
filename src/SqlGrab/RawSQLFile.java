@@ -103,7 +103,7 @@ public class RawSQLFile {
         for(int i=0; i < pages.size(); i++){
             String temp = pages.get(i).GetRawData();
             if(temp != ""){
-                returnString += "Page "+ i +"\n ==================================================\n"+  temp + "\n";
+                returnString += "Page \n ==================================================\n"+  temp + "\n";
             }
         }
         return returnString;
