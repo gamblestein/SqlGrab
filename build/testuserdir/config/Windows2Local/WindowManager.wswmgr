@@ -41,6 +41,6 @@
   <bounds x="528" y="208" width="672" height="382" />
     </editor-area>
     <screen width="1600" height="900"/>
-    <active-mode name="editor"/>
+    <active-mode name="output"/>
     <toolbar configuration="Standard" preferred-icon-size="24"/>
 </windowmanager>

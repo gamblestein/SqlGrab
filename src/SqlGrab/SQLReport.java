@@ -28,6 +28,7 @@ import org.sleuthkit.datamodel.TskData;
  */
 public class SQLReport implements GeneralReportModule {
 
+    private final String fileName = "SQLGrab.csv";
     SQLReportPanel reportPanel;
     public static SQLReport instance = null;
     
@@ -48,7 +49,7 @@ public class SQLReport implements GeneralReportModule {
         pnl.start();
         pnl.updateStatusLabel("SQLReport");
         
-        String reportPath = basDir + File.pathSeparator + "SQLGrab.csv";
+        String reportPath = basDir + File.pathSeparator + fileName;
         
         Case currCase = Case.getCurrentCase();
         SleuthkitCase skCase = currCase.getSleuthkitCase();
@@ -107,17 +108,17 @@ public class SQLReport implements GeneralReportModule {
 
     @Override
     public String getName() {
-        return "SQLiteReport.getname.txt";
+        return "SQLiteReport";
     }
 
     @Override
     public String getDescription() {
-        return "SQLiteReport.getdescription.txt";
+        return "SQLiteReport";
     }
 
     @Override
     public String getRelativeFilePath() {
-        return "SQLGrab.txt";
+        return fileName;
     }
     
 }
