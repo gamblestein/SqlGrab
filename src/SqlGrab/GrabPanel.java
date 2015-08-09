@@ -1,22 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SqlGrab;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.openide.nodes.Node;
 import org.openide.util.lookup.ServiceProvider;
 import org.sleuthkit.autopsy.corecomponentinterfaces.DataContentViewer;
 import org.sleuthkit.datamodel.Content;
-import org.sleuthkit.datamodel.TskCoreException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,12 +17,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import org.sleuthkit.datamodel.AbstractFile;
-import org.sleuthkit.datamodel.BlackboardArtifact;
 
-/**
- *
- * @author Stacey
- */
+
 @ServiceProvider(service = DataContentViewer.class)
 public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
      
@@ -133,7 +119,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
             
             if(file.canRead())
             {
-                ArrayList<BlackboardArtifact> list = file.getAllArtifacts();
+                
                 try {
                         
                     if(RawSQLFile.IsSQLLite(file)){

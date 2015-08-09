@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SqlGrab;
 import org.sleuthkit.datamodel.AbstractFile;
 import java.io.IOException;
@@ -10,10 +6,7 @@ import org.sleuthkit.datamodel.TskCoreException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-/**
- *
- * @author Stacey
- */
+
 public class RawSQLFile {
     
     private static final long FILE_SIG_OFFSET = 0;
@@ -25,7 +18,6 @@ public class RawSQLFile {
     private static final long FILE_FLAG_LENGTH = 1;
     private static final int FILE_FLAG_VALUE = 13;
     
-    private static final int FILE_HEADER_OFFSET = 100;
     
     private ArrayList<SQLPage> pages = new ArrayList();
     
@@ -103,7 +95,7 @@ public class RawSQLFile {
         for(int i=0; i < pages.size(); i++){
             String temp = pages.get(i).GetRawData();
             if(temp != ""){
-                returnString += "Page \n ==================================================\n"+  temp + "\n";
+                returnString += "Page \n==================================================\n"+  temp + "\n";
             }
         }
         return returnString;

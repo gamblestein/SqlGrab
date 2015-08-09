@@ -5,8 +5,6 @@
  */
 package SqlGrab;
 
-import org.sleuthkit.autopsy.coreutils.ModuleSettings;
-
 /**
  *
  * @author Stacey

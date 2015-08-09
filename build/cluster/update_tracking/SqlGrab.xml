@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="SqlGrab">
-    <module_version install_time="1439145500216" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1439157527474" last="true" origin="installer" specification_version="1.0">
         <file crc="1781167737" name="config/Modules/SqlGrab.xml"/>
-        <file crc="1147540361" name="modules/SqlGrab.jar"/>
+        <file crc="4046662060" name="modules/SqlGrab.jar"/>
         <file crc="1109638860" name="modules/ext/sqlite-jdbc-3.8.11.1.jar"/>
     </module_version>
 </module>

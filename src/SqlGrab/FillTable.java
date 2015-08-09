@@ -2,7 +2,6 @@
 
 package SqlGrab;
 
-
 import java.sql.*;
 import java.util.*;
 import javax.swing.table.*;
@@ -48,20 +47,23 @@ public class FillTable extends AbstractTableModel{
         }
     }
 
-    
+    @Override
     public int getColumnCount(){
         return columnCount;
     }
-
+    
+    @Override
     public int getRowCount(){
         return rowCount;
     }
 
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex){
         Object[] row=(Object[]) data.get(rowIndex);
         return row[columnIndex];
     }
 
+    @Override
     public String getColumnName(int columnIndex){
         try{
             return (String) header.get(columnIndex);

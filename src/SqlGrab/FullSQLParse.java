@@ -13,17 +13,11 @@ import java.sql.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
-import javax.swing.table.TableModel;
 import org.sleuthkit.autopsy.datamodel.ContentUtils;
 import org.sleuthkit.datamodel.AbstractFile;
 
 
 
-/**
- *
- * @author Stacey
- */
 public class FullSQLParse {
     
     private static final String GETTABLES = "Select name from sqlite_master where type = 'table'";

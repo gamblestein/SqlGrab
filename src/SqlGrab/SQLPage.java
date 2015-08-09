@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package SqlGrab;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import org.sleuthkit.datamodel.AbstractFile;
+
 
 /**
  *
@@ -35,12 +31,7 @@ public class SQLPage {
     
     private static final int CELL_OFFSET_OFFSET = 5;
     private static final int CELL_OFFSET_SIZE = 7;
-    
-    private static final int NUM_FREE_BYTES_OFFSET = 7;
-    private static final int NUM_FREE_BYTES_SIZE = 1;
-
-    private static final int HEADER_OFFSET = 1;
-    
+        
     public SQLPage(int size, byte[] sqlFile) {
         this.pageSize = size;
         this.sqlPage = sqlFile;
@@ -100,10 +91,10 @@ public class SQLPage {
     
     private String CleanString(byte[] input){
         try{
-        return new String(input,"UTF-8").trim();//.replaceAll("[^\\p{L}\\p{Nd}]+"," ");
+        return new String(input,"UTF-8").trim();
         }
         catch(Exception e){
-            //todo
+            System.out.println(e.getMessage());
         }
         return "";
     }
@@ -114,7 +105,6 @@ public class SQLPage {
         
         
         byte[] unallocated = Arrays.copyOfRange(sqlPage, start, start+length);   
-        String data = new String(unallocated);
         unAllocData = CleanString(unallocated);
     }
     
