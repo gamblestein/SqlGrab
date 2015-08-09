@@ -13,7 +13,6 @@ public class FillTable extends AbstractTableModel{
     *
     */
     private static final long serialVersionUID = -912060609250881296L;
-    private ResultSet rs;
     private int rowCount;
     private int columnCount;
     private ArrayList data=new ArrayList();
@@ -28,7 +27,6 @@ public class FillTable extends AbstractTableModel{
     {
         try
         {
-            this.rs=_rs;
             ResultSetMetaData metaData=_rs.getMetaData();
             rowCount=0;
             columnCount=metaData.getColumnCount();
@@ -38,7 +36,7 @@ public class FillTable extends AbstractTableModel{
                 Object[] row=new Object[columnCount];
 
                 for(int j=0;j<columnCount;j++){
-                    setHeader(j+1);
+                    header.add(metaData.getColumnName(j+1));
                     row[j]=_rs.getObject(j+1);
                 }
                 data.add(row);
@@ -50,15 +48,6 @@ public class FillTable extends AbstractTableModel{
         }
     }
 
-    public void setHeader(int i){
-        try{
-            header.add(rs.getMetaData().getColumnName(i));
-        }
-        catch (Exception e)
-        {
-            //TODO
-        }
-    }
     
     public int getColumnCount(){
         return columnCount;

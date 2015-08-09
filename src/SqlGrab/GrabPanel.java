@@ -26,9 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JViewport;
-import org.sleuthkit.autopsy.casemodule.Case;
-import org.sleuthkit.autopsy.datamodel.ContentUtils;
 import org.sleuthkit.datamodel.AbstractFile;
 import org.sleuthkit.datamodel.BlackboardArtifact;
 
@@ -38,7 +35,7 @@ import org.sleuthkit.datamodel.BlackboardArtifact;
  */
 @ServiceProvider(service = DataContentViewer.class)
 public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
-    private static final String TEMPFILE = "tempfile.sqlite"; 
+     
     /**
      * Creates new form GrabPanel
      */
@@ -142,7 +139,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
                     if(RawSQLFile.IsSQLLite(file)){
                         RawSQLFile sqlFile = new RawSQLFile(file);
                         sqlFile.CreatePages();
-                        FullParse(CreateDBFile(file));
+                        FullParse(file);
                         CreatTextTable(sqlFile.GetPageData());
                     }
                 }
@@ -169,12 +166,12 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     }
     
     
-    private void CreateDBTab(String tabName){
+    private void CreateDBTab(AbstractFile file, String tabName){
                 
         JHorizontalFriendlyTable jTable = new JHorizontalFriendlyTable();
         JScrollPane jScrollPane = new javax.swing.JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        jTable.setModel(FullSQLParse.GetSqlDataInTable("Select * from " + tabName));
+        jTable.setModel(FullSQLParse.GetSqlDataInTable(file,"Select * from " + tabName));
         jScrollPane.setViewportView(jTable);
         jScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, jTable.getTableHeader());
         
@@ -198,34 +195,16 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
 
     }
     
-    private void FullParse(String filepath){
+    private void FullParse(AbstractFile file){
     
-        
-        ArrayList<String> tabs = FullSQLParse.GetTables();
+        ArrayList<String> tabs = FullSQLParse.GetTables(file);
         
         for(String tabname: tabs){
-            CreateDBTab(tabname);
+            CreateDBTab(file, tabname);
         }
     }  
     
-    private String CreateDBFile(AbstractFile fileData){
-        
-        
-        
-        try{
-            Path path =Paths.get(TEMPFILE);
-            Files.delete(path);
-            File file = new File(TEMPFILE);
-            ContentUtils.writeToFile(fileData, file);
-            
-        }
-        catch (Exception ex){
-            System.out.println("Error reading file: " + ex.getLocalizedMessage());
-        }
-        
-        return TEMPFILE;
-    }
-    
+   
     
     // set the text in the lable in the JPanel
     private void setText(String str) {

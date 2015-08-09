@@ -6,9 +6,11 @@
 package SqlGrab;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import org.openide.util.NbBundle;
@@ -41,53 +43,54 @@ public class SQLReport implements GeneralReportModule {
     
     @Override
     @SuppressWarnings("deprecation")
-    public void generateReport(String string, ReportProgressPanel pnl) {
+    public void generateReport(String basDir, ReportProgressPanel pnl) {
         pnl.setIndeterminate(false);
         pnl.start();
         pnl.updateStatusLabel("SQLReport");
         
-        String reportPath = "SQLGrab.txt";
+        String reportPath = basDir + File.pathSeparator + "SQLGrab.txt";
         
         Case currCase = Case.getCurrentCase();
         SleuthkitCase skCase = currCase.getSleuthkitCase();
+        BufferedWriter bfw;
         
         try{
         
-            BufferedWriter bfw = new BufferedWriter(new FileWriter(reportPath,true));
-            
-            final String query = "type = " + TskData.TSK_DB_FILES_TYPE_ENUM.FS.getFileType() //NON-NLS
-                    + " AND name != '.' AND name != '..'"; //NON-NLS
-
-            
-            List<AbstractFile> fs = skCase.findAllFilesWhere(query);
+            bfw = new BufferedWriter(new FileWriter(reportPath,true));
+                        
+            List<AbstractFile> fs = skCase.findFiles(skCase.getContentById(Integer.valueOf(reportPanel.GetContentID())), reportPanel.GetFileName());
             for (AbstractFile file : fs) {
                 if(RawSQLFile.IsSQLLite(file))
                 {
-                    ResultSet rs = FullSQLParse.GetSqlData(reportPanel.GetInputText());                  
-                    ParseOutput(rs,bfw);
+                    ArrayList<String[]> al = FullSQLParse.GetSqlData(file, reportPanel.GetInputText());                  
+                    ParseOutput(al,bfw);
                 }
             }
-            
+            bfw.close();
             
         } catch (Exception e){
             System.out.println(e.getMessage());
+        }
+        finally
+        {
+            
         }
         pnl.complete();
     }
 
     
-    private void ParseOutput(ResultSet rs, BufferedWriter bfw)
+    private void ParseOutput(ArrayList<String[]> list, BufferedWriter bfw)
     {
         
         try{
-            ResultSetMetaData metaData=rs.getMetaData();
-            int columnCount=metaData.getColumnCount();
-            while(rs.next()){
-                for(int i=0;i<columnCount;i++){
+            String[] templist;
+            for(int i=0; i<list.size(); i++){
+                templist = list.get(i);
+                for(int j=0;j<templist.length;j++){
 
-                    bfw.write((String)rs.getObject(i+1) + "|");
+                    bfw.write(templist[j] + "|");
                 }
-                bfw.write("\n");
+                bfw.newLine();
             }
         }
         catch(Exception ex)
