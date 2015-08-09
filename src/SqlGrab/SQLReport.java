@@ -8,19 +8,15 @@ package SqlGrab;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
-import org.openide.util.NbBundle;
 import org.sleuthkit.autopsy.casemodule.Case;
 import org.sleuthkit.autopsy.report.GeneralReportModule;
 import org.sleuthkit.autopsy.report.ReportProgressPanel;
 import org.sleuthkit.datamodel.AbstractFile;
-import org.sleuthkit.datamodel.FsContent;
 import org.sleuthkit.datamodel.SleuthkitCase;
-import org.sleuthkit.datamodel.TskData;
+
 
 /**
  *
