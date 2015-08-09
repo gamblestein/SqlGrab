@@ -51,15 +51,28 @@ public class FullSQLParse {
     
     //Return this as a datasource
     public static FillTable GetSqlDataInTable(String nameQuery){
-        Connection c = null;
         FillTable ft = null;
+        
+        try{
+            ft = new FillTable(GetSqlData(nameQuery));
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+              
+        return ft;
+    }
+    
+    //Return this as a datasource
+    public static ResultSet GetSqlData(String nameQuery){
+        Connection c = null;
+        ResultSet rs = null;
         
         SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
         try{
            //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
            tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
-           ResultSet rs = tempdbConnect.executeQry(nameQuery);
-           ft = new FillTable(rs);
+           rs = tempdbConnect.executeQry(nameQuery);
               
         }
         catch (Exception e)
@@ -70,7 +83,7 @@ public class FullSQLParse {
         {
             tempdbConnect.closeConnection();;
         }
-        return ft;
+        return rs;
     }
     
     

@@ -25,23 +25,28 @@ public class FillTable extends AbstractTableModel{
     }
 
     public void setRS(ResultSet _rs)
-    throws Exception
     {
-        this.rs=_rs;
-        ResultSetMetaData metaData=_rs.getMetaData();
-        rowCount=0;
-        columnCount=metaData.getColumnCount();
-        //Return to begining after header parse
-        
-        while(_rs.next()){
-            Object[] row=new Object[columnCount];
-            
-            for(int j=0;j<columnCount;j++){
-                setHeader(j+1);
-                row[j]=_rs.getObject(j+1);
+        try
+        {
+            this.rs=_rs;
+            ResultSetMetaData metaData=_rs.getMetaData();
+            rowCount=0;
+            columnCount=metaData.getColumnCount();
+            //Return to begining after header parse
+
+            while(_rs.next()){
+                Object[] row=new Object[columnCount];
+
+                for(int j=0;j<columnCount;j++){
+                    setHeader(j+1);
+                    row[j]=_rs.getObject(j+1);
+                }
+                data.add(row);
+                rowCount++;
             }
-            data.add(row);
-            rowCount++;
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
         }
     }
 

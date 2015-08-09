@@ -7,6 +7,8 @@ package SqlGrab;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.List;
 import javax.swing.JPanel;
 import org.openide.util.NbBundle;
@@ -56,39 +58,43 @@ public class SQLReport implements GeneralReportModule {
             final String query = "type = " + TskData.TSK_DB_FILES_TYPE_ENUM.FS.getFileType() //NON-NLS
                     + " AND name != '.' AND name != '..'"; //NON-NLS
 
-            pnl.updateStatusLabel(NbBundle.getMessage(this.getClass(), "ReportBodyFile.progress.loading"));
+            
             List<AbstractFile> fs = skCase.findAllFilesWhere(query);
             for (AbstractFile file : fs) {
                 if(RawSQLFile.IsSQLLite(file))
                 {
-                    FillTable table = FullSQLParse.GetSqlDataInTable(reportPanel.GetInputText());
-                    
-                    bfw.write(table.);
+                    ResultSet rs = FullSQLParse.GetSqlData(reportPanel.GetInputText());                  
+                    ParseOutput(rs,bfw);
                 }
             }
             
             
         } catch (Exception e){
-            
+            System.out.println(e.getMessage());
         }
         pnl.complete();
     }
 
     
-//    //http://www.codeproject.com/Tips/261752/Convert-DataTable-to-String-by-Extension-Method
-//    public String ConvertDataTableToString(this DataTable dt)
-//    {
-//        StringBuilder stringBuilder = new StringBuilder();
-//        dt.Rows.Cast<DataRow>().ToList().ForEach(dataRow =>
-//        {
-//            dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
-//            {
-//                stringBuilder.AppendFormat("{0}:{1} ", column.ColumnName, dataRow[column]);
-//            });
-//            stringBuilder.Append(Environment.NewLine);
-//        });
-//        return stringBuilder.ToString();
-//    }
+    private void ParseOutput(ResultSet rs, BufferedWriter bfw)
+    {
+        
+        try{
+            ResultSetMetaData metaData=rs.getMetaData();
+            int columnCount=metaData.getColumnCount();
+            while(rs.next()){
+                for(int i=0;i<columnCount;i++){
+
+                    bfw.write((String)rs.getObject(i+1) + "|");
+                }
+                bfw.write("\n");
+            }
+        }
+        catch(Exception ex)
+        {
+            //TODO
+        }
+    }
     
     @Override
     public JPanel getConfigurationPanel() {
