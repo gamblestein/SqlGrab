@@ -15,16 +15,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import org.sleuthkit.autopsy.datamodel.ContentUtils;
 import org.sleuthkit.datamodel.AbstractFile;
+import org.sleuthkit.autopsy.coreutils.Logger;
+import java.util.logging.Level;
 
 
 
 public class FullSQLParse {
     
+    //Finals
     private static final String GETTABLES = "Select name from sqlite_master where type = 'table'";
+    private static final String TEMPFILE = "tempfile.sqlite";
+    private static final String DBTYPE = "org.sqlite.JDBC";
+    private static final String DBCONNECT = "jdbc:sqlite:tempfile.sqlite";
+    private static final String NAME = "name";
     
+    //Globals
     static String[] tableNames;
     ArrayList list = new ArrayList();
-    private static final String TEMPFILE = "tempfile.sqlite";
+    private static Logger logger = Logger.getLogger(FullSQLParse.class.getName());
+    
     
     
     public static ArrayList GetTables(AbstractFile file){
@@ -32,16 +41,16 @@ public class FullSQLParse {
         ArrayList<String> returnList = new ArrayList();
         SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
         try{
-           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
+           tempdbConnect = new SQLiteDBConnect(DBTYPE,DBCONNECT);
            ResultSet rs = tempdbConnect.executeQry(GETTABLES);
            while(rs.next())
            {
-               returnList.add(rs.getString("name"));
+               returnList.add(rs.getString(NAME));
            }       
         }
         catch (Exception e)
         {
-            System.out.print(e.getMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         finally
         {
@@ -57,14 +66,13 @@ public class FullSQLParse {
         
         SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
         try{
-           //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
-           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
+           tempdbConnect = new SQLiteDBConnect(DBTYPE,DBCONNECT);
            ResultSet rs = tempdbConnect.executeQry(nameQuery);
            ft = new FillTable(rs);
         }
         catch (Exception e)
         {
-            System.out.print(e.getMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         finally
         {
@@ -81,8 +89,7 @@ public class FullSQLParse {
         
         SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
         try{
-           //SQLiteDBConnect tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc.sqlite:"+path.toString());          
-           tempdbConnect = new SQLiteDBConnect("org.sqlite.JDBC","jdbc:sqlite:tempfile.sqlite");
+           tempdbConnect = new SQLiteDBConnect(DBTYPE,DBCONNECT);
            rs = tempdbConnect.executeQry(nameQuery);
               
            
@@ -109,7 +116,7 @@ public class FullSQLParse {
         }
         catch (Exception e)
         {
-            System.out.print(e.getMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         finally
         {
@@ -119,9 +126,7 @@ public class FullSQLParse {
     }
     
     private static String CreateDBFile(AbstractFile fileData){
-        
-        
-        
+         
         try{
             Path path =Paths.get(TEMPFILE);
             Files.delete(path);
@@ -130,7 +135,7 @@ public class FullSQLParse {
             
         }
         catch (Exception ex){
-            System.out.println("Error reading file: " + ex.getLocalizedMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         
         return TEMPFILE;

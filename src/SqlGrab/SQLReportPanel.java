@@ -12,10 +12,6 @@ import org.sleuthkit.autopsy.coreutils.ModuleSettings;
  * @author Stacey
  */
 public class SQLReportPanel extends javax.swing.JPanel {
-
-    private String ContentID = "";
-    private String queryText = "";
-    private String FileName = "";
     
     /**
      * Creates new form SQLReportPanel
