@@ -8,42 +8,30 @@ import javax.swing.table.*;
  
 public class FillTable extends AbstractTableModel{
 
-    /**
-    *
-    */
-    private static final long serialVersionUID = -912060609250881296L;
     private int rowCount;
     private int columnCount;
-    private ArrayList data=new ArrayList();
-    private ArrayList header=new ArrayList();
+    
+    private final ArrayList data=new ArrayList();
+    private final ArrayList header=new ArrayList();
 
-    public FillTable(ResultSet _rs) throws Exception
+    public FillTable(ResultSet rs) throws Exception
     {
-        setRS(_rs);
+        setRS(rs);
     }
 
-    public void setRS(ResultSet _rs)
+    private void setRS(ResultSet _rs) throws Exception
     {
-        try
-        {
-            ResultSetMetaData metaData=_rs.getMetaData();
-            rowCount=0;
-            columnCount=metaData.getColumnCount();
-            //Return to begining after header parse
+        ResultSetMetaData metaData=_rs.getMetaData();
+        columnCount=metaData.getColumnCount();
+        
+        while(_rs.next()){
+            Object[] row=new Object[columnCount];
 
-            while(_rs.next()){
-                Object[] row=new Object[columnCount];
-
-                for(int j=0;j<columnCount;j++){
-                    header.add(metaData.getColumnName(j+1));
-                    row[j]=_rs.getObject(j+1);
-                }
-                data.add(row);
-                rowCount++;
+            for(int j=0;j<columnCount;j++){
+                header.add(metaData.getColumnName(j+1));
+                row[j]=_rs.getObject(j+1);
             }
-        }
-        catch (Exception ex){
-            System.out.println(ex.getMessage());
+            data.add(row);
         }
     }
 
@@ -65,11 +53,6 @@ public class FillTable extends AbstractTableModel{
 
     @Override
     public String getColumnName(int columnIndex){
-        try{
-            return (String) header.get(columnIndex);
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        return (String) header.get(columnIndex);
     }
 }

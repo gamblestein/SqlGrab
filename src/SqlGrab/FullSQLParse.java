@@ -7,6 +7,7 @@
 package SqlGrab;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import org.sleuthkit.autopsy.coreutils.SQLiteDBConnect;
 import java.sql.*;
@@ -38,8 +39,10 @@ public class FullSQLParse {
     
     public static ArrayList GetTables(AbstractFile file){
         CreateDBFile(file);
+        
         ArrayList<String> returnList = new ArrayList();
         SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
+        
         try{
            tempdbConnect = new SQLiteDBConnect(DBTYPE,DBCONNECT);
            ResultSet rs = tempdbConnect.executeQry(GETTABLES);
@@ -48,7 +51,7 @@ public class FullSQLParse {
                returnList.add(rs.getString(NAME));
            }       
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             logger.log(Level.WARNING, e.getLocalizedMessage());
         }
@@ -88,13 +91,13 @@ public class FullSQLParse {
         ArrayList<String[]> data = new ArrayList();
         
         SQLiteDBConnect tempdbConnect = new SQLiteDBConnect();
+        
         try{
            tempdbConnect = new SQLiteDBConnect(DBTYPE,DBCONNECT);
            rs = tempdbConnect.executeQry(nameQuery);
               
            
             ResultSetMetaData metaData=rs.getMetaData();
-            int rowCount=0;
             int columnCount=metaData.getColumnCount();
             //Return to begining after header parse
 
@@ -111,10 +114,9 @@ public class FullSQLParse {
                     }
                 }
                 data.add(row);
-
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             logger.log(Level.WARNING, e.getLocalizedMessage());
         }
@@ -134,8 +136,8 @@ public class FullSQLParse {
             ContentUtils.writeToFile(fileData, file);
             
         }
-        catch (Exception ex){
-            logger.log(Level.WARNING, e.getLocalizedMessage());
+        catch (IOException ex){
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
         
         return TEMPFILE;

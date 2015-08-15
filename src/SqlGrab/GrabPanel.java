@@ -22,6 +22,8 @@ import org.sleuthkit.datamodel.AbstractFile;
 @ServiceProvider(service = DataContentViewer.class)
 public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
      
+    private final String QUERYSTATEMENT = "Select * from ";
+    
     /**
      * Creates new form GrabPanel
      */
@@ -104,7 +106,9 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
     @Override
     public void setNode(org.openide.nodes.Node selectedNode) {
         
+        //Clear results from previous setNode call.
         jTabbedPane1.removeAll();
+        
         try{
             if (selectedNode == null) {
                 setText("");
@@ -157,7 +161,7 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
         JHorizontalFriendlyTable jTable = new JHorizontalFriendlyTable();
         JScrollPane jScrollPane = new javax.swing.JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        jTable.setModel(FullSQLParse.GetSqlDataInTable(file,"Select * from " + tabName));
+        jTable.setModel(FullSQLParse.GetSqlDataInTable(file,QUERYSTATEMENT + tabName));
         jScrollPane.setViewportView(jTable);
         jScrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, jTable.getTableHeader());
         
