@@ -122,19 +122,12 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
             }
             
             if(file.canRead())
-            {
-                
-                try {
-                        
-                    if(RawSQLFile.IsSQLLite(file)){
-                        RawSQLFile sqlFile = new RawSQLFile(file);
-                        sqlFile.CreatePages();
-                        FullParse(file);
-                        CreatTextTable(sqlFile.GetPageData());
-                    }
-                }
-                catch (IOException ex){
-                    System.out.println("Error reading files from database: " + ex.getLocalizedMessage());
+            {                    
+                if(RawSQLFile.IsSQLLite(file)){
+                    RawSQLFile sqlFile = new RawSQLFile(file);
+                    sqlFile.CreatePages();
+                    FullParse(file);
+                    CreatTextTable(sqlFile.GetPageData());
                 }
             }
 
@@ -234,16 +227,13 @@ public class GrabPanel extends javax.swing.JPanel implements DataContentViewer {
             return false;
         }
    
-        // we only want files that are 1024 bytes or larger (for no good reason)
-        if (content.getSize() < 1024) {
-            return false;
-        }
         return true;    
     }
     
     @Override
     public int isPreferred(org.openide.nodes.Node node) {
         // we return 1 since this module will operate on nearly all files
+        // TODO limite to SQLite files
         return 1;
     }
 }
